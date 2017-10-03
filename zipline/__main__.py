@@ -204,6 +204,11 @@ def ipython_only(option):
     metavar='FILENAME',
     help='Filename where the state will be stored'
 )
+@click.option(
+    '--broker-list',
+    is_flag=True,
+    help='Get list of available brokers'
+)
 @click.pass_context
 def run(ctx,
         algofile,
@@ -220,9 +225,15 @@ def run(ctx,
         local_namespace,
         broker,
         broker_uri,
-        state_file):
+        state_file,
+        broker_list):
     """Run a backtest for the given algorithm.
     """
+
+    if broker_list:
+        click.echo("Supported brokers: Interactive Brokers [ib]")
+        return
+
     # check that the start and end dates are passed correctly
     if not broker and start is None and end is None:
         # check both at the same time to avoid the case where a user
