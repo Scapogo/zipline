@@ -218,7 +218,6 @@ def ipython_only(option):
     is_flag=True,
     help='Get list of available brokers'
 )
-
 @click.pass_context
 def run(ctx,
         algofile,
@@ -267,6 +266,9 @@ def run(ctx,
 
     if broker and state_file is None:
         ctx.fail("must specify state-file with live trading")
+
+    if broker and realtime_bar_target is None:
+        ctx.fail("must specify realtime-bar-target with live trading")
 
     brokerobj = None
     if broker:
