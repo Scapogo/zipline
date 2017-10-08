@@ -208,15 +208,15 @@ def ipython_only(option):
     help='Filename where the state will be stored'
 )
 @click.option(
-    '--broker-list',
-    is_flag=True,
-    help='Get list of available brokers'
-)
-@click.option(
     '--realtime-bar-target',
     default=None,
     metavar='DIRNAME',
     help='Directory where the realtime collected minutely bars are saved'
+)
+@click.option(
+    '--broker-list',
+    is_flag=True,
+    help='Get list of available brokers'
 )
 
 @click.pass_context
