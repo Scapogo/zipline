@@ -214,7 +214,7 @@ def ipython_only(option):
     help='Directory where the realtime collected minutely bars are saved'
 )
 @click.option(
-    '--broker-list',
+    '--list-brokers',
     is_flag=True,
     help='Get list of available brokers'
 )
@@ -236,16 +236,16 @@ def run(ctx,
         broker,
         broker_uri,
         state_file,
-        broker_list,
-        realtime_bar_target):
+        realtime_bar_target,
+        list_brokers):
     """Run a backtest for the given algorithm.
     """
 
-    if broker_list:
+    if list_brokers:
         click.echo("Supported brokers:")
-        for module_loader, name, ispkg in pkgutil.iter_modules(brokers.__path__):
+        for _, name, _ in pkgutil.iter_modules(brokers.__path__):
             if name != 'broker':
-                print name
+                click.echo(name)
         return
 
     # check that the start and end dates are passed correctly
