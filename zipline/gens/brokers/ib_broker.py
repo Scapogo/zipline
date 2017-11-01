@@ -403,7 +403,7 @@ class IBBroker(Broker):
                 # it needs to be skipped.
                 continue
             z_position.amount = int(ib_position.position)
-            z_position.cost_basis = float(ib_position.market_price)
+            z_position.cost_basis = float(ib_position.average_cost)
             z_position.last_sale_price = float(
                 self._tws.bars[symbol].last_trade_price.iloc[-1])
             z_position.last_sale_date = self._tws.bars[symbol].index.values[-1]
