@@ -427,8 +427,8 @@ class IBBroker(Broker):
         z_portfolio.positions = self.positions
         z_portfolio.positions_value = float(ib_account['StockMarketValue'])
         z_portfolio.positions_exposure = (z_portfolio.positions_value /
-                                         (z_portfolio.positions_value +
-                                         float(ib_account['TotalCashValue'])))
+                                          (z_portfolio.positions_value +
+                                           float(ib_account['TotalCashValue'])))
 
         return z_portfolio
 
