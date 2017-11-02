@@ -52,12 +52,12 @@ Position = namedtuple('Position', ['contract', 'position', 'market_price',
 
 def log_message(message, mapping):
     try:
-        del(mapping['self'])
-    except (KeyError, ):
+        del (mapping['self'])
+    except (KeyError,):
         pass
     items = list(mapping.items())
     items.sort()
-    log.debug(('### %s' % (message, )))
+    log.debug(('### %s' % (message,)))
     for k, v in items:
         log.debug(('    %s:%s' % (k, v)))
 
@@ -404,9 +404,15 @@ class IBBroker(Broker):
                 continue
             z_position.amount = int(ib_position.position)
             z_position.cost_basis = float(ib_position.average_cost)
-            z_position.last_sale_price = float(
-                self._tws.bars[symbol].last_trade_price.iloc[-1])
-            z_position.last_sale_date = self._tws.bars[symbol].index.values[-1]
+            # Check if symbol exists in bars df
+            if symbol in self._tws.bars:
+                z_position.last_sale_price = \
+                    float(self._tws.bars[symbol].last_trade_price.iloc[-1])
+                z_position.last_sale_date = \
+                    self._tws.bars[symbol].index.values[-1]
+            else:
+                z_position.last_sale_price = None
+                z_position.last_sale_date = None
             z_positions[symbol_lookup(symbol)] = z_position
 
         return z_positions
@@ -426,9 +432,10 @@ class IBBroker(Broker):
         z_portfolio.start_date = None  # TODO(tibor)
         z_portfolio.positions = self.positions
         z_portfolio.positions_value = float(ib_account['StockMarketValue'])
-        z_portfolio.positions_exposure = (z_portfolio.positions_value /
-                                          (z_portfolio.positions_value +
-                                           float(ib_account['TotalCashValue'])))
+        z_portfolio.positions_exposure \
+            = (z_portfolio.positions_value /
+               (z_portfolio.positions_value +
+                float(ib_account['TotalCashValue'])))
 
         return z_portfolio
 
@@ -526,7 +533,7 @@ class IBBroker(Broker):
                 asset: [order.to_api_obj() for order in itervalues(self.orders)
                         if order.asset == asset]
                 for asset in assets
-            }
+                }
         return [order.to_api_obj() for order in itervalues(self.orders)
                 if order.asset == asset and order.open]
 
