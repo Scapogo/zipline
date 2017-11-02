@@ -442,7 +442,6 @@ class IBBroker(Broker):
     @property
     def account(self):
         ib_account = self._tws.accounts[self.account_id][self.currency]
-        portfolio = self.portfolio
 
         z_account = zp.Account()
 
@@ -470,8 +469,8 @@ class IBBroker(Broker):
         z_account.leverage = float(
             self._tws.accounts[self.account_id]['']['Leverage-S'])
         z_account.net_leverage = float(
-            portfolio.positions_value /
-            (portfolio.cash + portfolio.positions_value))
+            ib_account['StockMarketValue'] /
+            (ib_account['TotalCashValue'] + ib_account['StockMarketValue']))
         z_account.net_liquidation = float(ib_account['NetLiquidation'])
 
         return z_account
